@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chronicles of the Iron Dragon</title>
+    
+    <!-- Medieval Fonts from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Uncial+Antiqua&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Google Material Icons (Symbols) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <style>
+        /* --- Parchment Backdrop & Base Styles --- */
+        body {
+            background-color: #1a0f05;
+            color: #2b1d0c;
+            font-family: 'MedievalSharp', Georgia, serif;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .manuscript {
+            background-color: #f2e3c6;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3), rgba(0,0,0,0.05)),
+                linear-gradient(to bottom, rgba(218,190,149,0.3), rgba(164,130,83,0.4));
+            max-width: 900px;
+            width: 100%;
+            padding: 50px 40px;
+            border: 2px solid #5c401b;
+            box-shadow: 
+                0 0 20px rgba(0,0,0,0.8),
+                inset 0 0 60px rgba(139, 94, 26, 0.3);
+            border-radius: 4px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .manuscript::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            border: 12px solid transparent;
+            border-image: linear-gradient(to bottom right, #5c401b, #2b1d0c) 12;
+            opacity: 0.15;
+        }
+
+        /* --- Headings & Typography --- */
+        h1.manuscript-title {
+            font-family: 'Uncial Antiqua', cursive;
+            text-align: center;
+            font-size: 2.8rem;
+            color: #5c0606;
+            margin-top: 0;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            border-bottom: 2px double #5c401b;
+            padding-bottom: 15px;
+        }
+
+        /* --- Character Ledger --- */
+        .character-ledger {
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px dashed #8b5e1a;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 5px;
+        }
+
+        .ledger-title {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #5c401b;
+            text-align: center;
+        }
+
+        .dm-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed rgba(92, 64, 27, 0.3);
+        }
+
+        .dm-card {
+            display: flex;
+            align-items: center;
+            background: rgba(92, 6, 6, 0.1);
+            border: 1px solid #5c0606;
+            padding: 8px 20px;
+            border-radius: 4px;
+            box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
+        }
+
+        .character-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .character-card {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 8px 12px;
+            border-radius: 4px;
+            box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
+        }
+
+        .d20-container {
+            width: 36px;
+            height: 36px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+            flex-shrink: 0;
+        }
+
+        .d20-container .material-symbols-outlined {
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        .char-info .char-name {
+            font-weight: bold;
+            display: block;
+            font-size: 1rem;
+        }
+
+        .char-info .char-class {
+            font-size: 0.8rem;
+            font-style: italic;
+            color: #444;
+            display: block;
+        }
+
+        /* --- Story Text & Illuminated Drop Caps --- */
+        .story-p {
+            text-align: justify;
+            margin-bottom: 1.5rem;
+            text-indent: 1.5rem;
+        }
+
+        .story-p:first-of-type, .story-section-break {
+            text-indent: 0;
+        }
+
+        .drop-cap {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 4rem;
+            float: left;
+            line-height: 0.8;
+            margin-top: 6px;
+            margin-right: 8px;
+            padding: 4px;
+            color: #5c0606;
+            text-shadow: 2px 2px 0px #daae95;
+        }
+
+        /* --- ENHANCED BREAKOUT FORMATTING --- */
+        .breakout-quote {
+            font-style: italic;
+            font-size: 1.45rem;
+            line-height: 1.5;
+            border-left: 3px double #5c0606;
+            border-right: 3px double #5c0606;
+            margin: 30px 40px;
+            padding: 15px 20px;
+            text-align: center;
+            background: rgba(218, 190, 149, 0.2);
+        }
+
+        .breakout-quote small {
+            font-size: 1rem;
+            display: block;
+            margin-top: 8px;
+            font-style: normal;
+        }
+
+        .dialogue-box {
+            font-size: 1.35rem;
+            margin: 25px 30px;
+            padding: 20px;
+            border-top: 1px solid rgba(92, 64, 27, 0.3);
+            border-bottom: 1px solid rgba(92, 64, 27, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .dialogue-line {
+            margin-bottom: 10px;
+        }
+
+        .dialogue-line:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- Responsive Design Media Queries --- */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px 5px;
+            }
+            
+            .manuscript {
+                padding: 30px 15px;
+            }
+
+            h1.manuscript-title {
+                font-size: 2rem;
+            }
+
+            .drop-cap {
+                font-size: 3.2rem;
+            }
+
+            .breakout-quote {
+                font-size: 1.2rem;
+                margin: 20px 10px;
+                padding: 10px;
+            }
+
+            .dialogue-box {
+                font-size: 1.15rem;
+                margin: 20px 5px;
+                padding: 12px;
+            }
+
+            .story-p {
+                text-align: left;
+                font-size: 1.05rem;
+            }
+        }
+
+        /* ==========================================================================
+           CHARACTER COLOR CUSTOMIZATION
+           ========================================================================== */
+        .char-bacon    { color: #7e1e9c; font-weight: bold; } .bg-bacon    { background-color: #7e1e9c; }
+        .char-boh      { color: #00035b; font-weight: bold; } .bg-boh      { background-color: #00035b; }
+        .char-oldman   { color: #a2402e; font-weight: bold; } .bg-oldman   { background-color: #a2402e; }
+        .char-elcava   { color: #15b01a; font-weight: bold; } .bg-elcava   { background-color: #15b01a; }
+        .char-patti    { color: #653700; font-weight: bold; } .bg-patti    { background-color: #653700; }
+        .char-alice    { color: #ff007f; font-weight: bold; } .bg-alice    { background-color: #ff007f; }
+        .char-beard    { color: #029393; font-weight: bold; } .bg-beard    { background-color: #029393; }
+        .char-halen    { color: #f97306; font-weight: bold; } .bg-halen    { background-color: #f97306; }
+        .char-gm       { color: #5c0606; font-weight: bold; } .bg-gm       { background-color: #5c0606; }
+    </style>
+</head>
+<body>
+
+    <div class="manuscript">
+        
+        <h1 class="manuscript-title">Pirates, Trains and Expeditioners</h1>
+
+        <!-- Character Ledger -->
+        <div class="character-ledger">
+            <div class="ledger-title">Dramatis Personae</div>
+            
+            <!-- Dungeon Master Row -->
+            <div class="dm-section">
+                <div class="dm-card">
+                    <div class="d20-container bg-gm">
+                        <span class="material-symbols-outlined">menu_book</span>
+                    </div>
+                    <div class="char-info"><span class="char-name char-gm">Nate</span><span class="char-class">Dungeon Master</span></div>
+                </div>
+            </div>
+
+            <!-- Player Grid -->
+            <ul class="character-list">
+                <li class="character-card">
+                    <!-- Monk: back_hand -->
+                    <div class="d20-container bg-bacon">
+                        <span class="material-symbols-outlined">back_hand</span>
+                    </div>
+                    <div class="char-info"><span class="char-name char-bacon">Master Bacon</span><span class="char-class">Human Monk</span></div>
+                </li>
+                <li class="character-card">
+                    <!-- Barbarian: swords -->
+                    <div class="d20-container bg-boh">
+                        <span class="material-symbols-outlined">swords</span>
+                    </div>
+                    <div class="char-info"><span class="char-name char-boh">Lil' Boh</span><span class="char-class">Goliath Barbarian</span></div>
+                </li>
+                <li class="character-card">
+                    <!-- Artificer: build -->
+                    <div class="d20-container bg-oldman">
+                        <span class="material-symbols-outlined">build</span>
+                    </div>
+                    <div class="char-info"><span class="char-name char-oldman">Ye Old Man</span><span class="char-class">Gnome Artificer</span></div>
+                </li>
+                <li class="character-card">
+                    <!-- Wizard: wand_stars -->
+                    <div class="d20-container bg-elcava">
+                        <span class="material-symbols-outlined">wand_stars</span>
+                    </div>
+                    <div class="char-info"><span class="char-name char-elcava">Elcava</span><span class="char-class">High Elf Wizard</span></div>
+                </li>
+                <li class="character-card">
+                    <!-- Ranger: target -->
+                    <div class="d20-container bg-patti">
+                        <span class="material-symbols-outlined">target</span>
+                    </div>
+                    <div class="char-info"><span class="char-name char-patti">Patti Goouya</span><span class="char-class">Wood Elf Ranger</span></div>
+                </li>
+                <li class="character-card">
+                    <!-- Bard: music_note_2 -->
+                    <div class="d20-container bg-alice">
+                        <span class="material-symbols-outlined">music_note_2</span>
+                    </div>
+                    <div class="char-info"><span class="char-name char-alice">Alice of Lore</span><span class="char-class">Halfling Bard</span></div>
+                </li>
+                <li class="character-card">
+                    <!-- Barbarian: swords -->
+                    <div class="d20-container bg-beard">
+                        <span class="material-symbols-outlined">swords</span>
+                    </div>
+                    <div class="char-info"><span class="char-name char-beard">The Beard</span><span class="char-class">Dwarf Barbarian</span></div>
+                </li>
+                <li class="character-card">
+                    <!-- Bard: music_note_2 -->
+                    <div class="d20-container bg-halen">
+                        <span class="material-symbols-outlined">music_note_2</span>
+                    </div>
+                    <div class="char-info"><span class="char-name char-halen">Baron Von Halen</span><span class="char-class">Halfling Bard</span></div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Narrative Chapters -->
+        <main>
+            <p class="story-p">
+                <span class="drop-cap">A</span>t the bustling terminal, an eccentric band of travelers awaited the arrival of their locomotive. To pass the time, <span class="char-oldman">Ye Old Man</span> purchased a vintage wine, offering a heavy swig to <span class="char-boh">Lil' Boh</span> and <span class="char-beard">The Beard</span>. Seeking to ignite the spirits of the crowd, <span class="char-bacon">Master Bacon</span> unfurled a set of bagpipes, filling the station with a roaring melody that sparked an impromptu dance party. <span class="char-halen">Baron Von Halen</span> swiftly cast *dancing lights* to illuminate the floor and laid down his lute, while <span class="char-alice">Alice of Lore</span> accompanied him on a flute, albeit poorly. Not to be outdone, <span class="char-oldman">Ye Old Man</span> conjured a brilliant disco ball above the travelers, and <span class="char-beard">The Beard</span> kept rhythm by juggling whistling throwing axes through the air.
+            </p>
+
+            <p class="story-p">
+                Amidst the celebratory chaos, mischief took hold. <span class="char-patti">Patti Goouya</span> reached into the ether to cast *detect magic*, but her focus was shattered when <span class="char-boh">Lil' Boh</span> covertly slipped a glowing magical artifact straight from her person. The dance, however, proved lucrative, earning the light-footed performers a handsome sum of ten gold pieces from the amused onlookers.
+            </p>
+
+            <p class="story-p">
+                As the train groaned to a halt at the platform, the mood shifted. <span class="char-boh">Lil' Boh</span> attempted to intimidate a station guard into surrendering his cheese, and <span class="char-oldman">Ye Old Man</span> barked a similar demand; both failed miserably and were curtly ordered to board. Standing by the tracks, <span class="char-elcava">Elcava</span> noticed an unusual presence: an excessive contingent of heavily armed guards keeping watch over a massive, reinforced box being loaded into one of the vault cars.
+            </p>
+
+            <div class="breakout-quote">
+                "Violence is fun!" <br>
+                <small>— <span class="char-boh">Lil' Boh</span></small>
+            </div>
+
+            <p class="story-p">
+                Determined to ride in style, <span class="char-boh">Lil' Boh</span> tried to browbeat another guard into letting them into first class, but his thuggish threats fell short, and they were ushered into the standard cars with the rest of the cattle. Once aboard, <span class="char-halen">Baron Von Halen</span> retreated to the dining car, strumming his lute to busk for five quick gold pieces. Meanwhile, <span class="char-oldman">Ye Old Man</span> began terrorizing the civilian passengers until an official guard intervened and scolded him for his foul behavior.
+            </p>
+
+            <p class="story-p">
+                Near the rear of the train, <span class="char-alice">Alice of Lore</span> subtly conjured a *mage hand* to tamper with the locked door guarding the mysterious box and extra sentries, but the lock held firm. Back in the dining car, <span class="char-beard">The Beard</span> joined <span class="char-halen">Baron Von Halen</span> and bought a round of stiff drinks. The halfling bard critically failed his constitution check, succumbing instantly to the heavy spirits; his drunken fingers fumbled across his lute strings, and his music suffered terribly.
+            </p>
+
+            <p class="story-p">
+                Desperate to clear out the passengers so they could crack the vault door, <span class="char-patti">Patti Goouya</span> conjured a localized cloud of skunk scent. The magic manifested as a horrific, invisible flatulence that choked the air. Gagging, the majority of the passengers fled the carriage in search of oxygen. Hoping to assist, <span class="char-elcava">Elcava</span> blasted the vault lock with *ray of frost*. Unfortunately, freezing the mechanism solid rendered it entirely unpickable. 
+            </p>
+
+            <p class="story-p">
+                At that moment, <span class="char-beard">The Beard</span> entered the carriage, physically hauling the deeply intoxicated <span class="char-halen">Baron Von Halen</span>. Upon inhaling the terrible, lingering stench, <span class="char-beard">The Beard</span> vomited violently and collapsed onto the floor. Seeing the disaster, <span class="char-oldman">Ye Old Man</span> cast *prestidigitation*, instantly scrubbing the vile odor from the air. Two guards rushed in to investigate the commotion. <span class="char-alice">Alice of Lore</span> quickly attempted to cast *charm person* on them both, but the guards possessed strong constitutions and shook off the enchantment entirely.
+            </p>
+
+            <p class="story-p">
+                As <span class="char-oldman">Ye Old Man</span> and <span class="char-boh">Lil' Boh</span> stepped outside to recover from the fumes, <span class="char-bacon">Master Bacon</span> confronted the guards, loudly claiming the odor was an essential tenet of her holy religion and that their disgust was a theological insult. The guards were entirely unconvinced. The drunken <span class="char-halen">Baron Von Halen</span> tried to intervene with a slurred *vicious mockery*, but failed utterly, giving the guards cause to promptly arrest him. The remaining guards ordered the party to open the windows, air out the car, and allow the returning passengers to take their assigned seats.
+            </p>
+
+            <p class="story-p">
+                With the civilians filing back in, desperation mounted. <span class="char-bacon">Master Bacon</span> took a roaring head start, leapt into the air, and drove her spear straight at the frozen lock at full speed—only to bounce off the door completely uninjured but thoroughly thwarted. Nearby, <span class="char-oldman">Ye Old Man</span> was wandering around trying to purchase butter from confused travelers, none of whom understood his bizarre quest.
+            </p>
+
+            <div class="dialogue-box">
+                <div class="dialogue-line"><span class="char-oldman">Ye Old Man:</span> "Can I buy butter?"</div>
+                <div class="dialogue-line"><span class="char-gm">Nate (DM):</span> "How much?"</div>
+                <div class="dialogue-line"><span class="char-oldman">Ye Old Man:</span> "Not a lot."</div>
+            </div>
+
+            <p class="story-p">
+                Seeking intelligence, <span class="char-patti">Patti Goouya</span> and <span class="char-alice">Alice of Lore</span> pooled their magical beast-speech abilities and dispatched <span class="char-patti">Patti Goouya's</span> companion bird to scout the train. When the avian spy returned, they learned a terrifying truth: the train's engine was fueled by an immensely powerful, volatile, and chaotic raw magical energy that would explode if damaged.
+            </p>
+
+            <p class="story-p">
+                As the passengers finally drifted to sleep, a contingent of the party snuck forward toward the engine car. <span class="char-oldman">Ye Old Man</span> dragged a reluctant <span class="char-boh">Lil' Boh</span> along, while <span class="char-alice">Alice of Lore</span> led a makeshift "traveling band of halflings" through the sleeping cars. Passing the winding-down dining car, <span class="char-alice">Alice of Lore</span> began playing a medieval rendition of Shakira. <span class="char-halen">Baron Von Halen</span> enthusiastically shook his hips in rhythm, while <span class="char-oldman">Ye Old Man</span> tried to juggle his weapons, fumbling them loudly across the floor.
+            </p>
+
+            <p class="story-p">
+                Reaching the engine door, they found it barred by two mechanical iron automata. <span class="char-alice">Alice of Lore</span> immediately tried to charm one of the machines, to no avail.
+            </p>
+
+            <div class="breakout-quote">
+                "I would like to cast Charm Person!" <br>
+                <small>— <span class="char-alice">Alice of Lore</span> (targeting a literal robot)</small>
+            </div>
+
+            <p class="story-p">
+                <span class="char-halen">Baron Von Halen</span> wracked his brain to remember any vital lore regarding this magical train, but the only absolute fact he could deduce was that they were, indubitably, riding on a train. <span class="char-bacon">Master Bacon</span> attempted to forge an official clearance letter to trick the automated sentries, and <span class="char-halen">Baron Von Halen</span> cast *dancing lights* in a first-class cabin to draw the organic guards away, but the subversion failed. The party was firmly escorted back to their proper car by the guards. Defeated, <span class="char-halen">Baron Von Halen</span> failed an investigation check, <span class="char-beard">The Beard</span> failed to learn anything about the frozen door, and the party remained completely oblivious to their surroundings.
+            </p>
+
+            <p class="story-p">
+                Refusing to give up, <span class="char-bacon">Master Bacon</span> whipped out her thieves' tools and attacked the frozen lock again. Miraculously, her tools clicked through the pins successfully, but the frozen mechanism refused to budge.
+            </p>
+
+            <div class="dialogue-box">
+                <div class="dialogue-line"><span class="char-bacon">Master Bacon:</span> "Who’s a Wizard?"</div>
+                <div class="dialogue-line"><span class="char-elcava">Elcava:</span> "I’m a Wizard!"</div>
+                <div class="dialogue-line"><span class="char-bacon">Master Bacon:</span> "Girl, what are you doing?!"</div>
+            </div>
+
+            <p class="story-p">
+                <span class="story-section-break"><span class="drop-cap">S</span>uddenly,</span> disaster struck from above. A shadow eclipsed the moon as a massive flying pirate barge descended upon the train, and ten grizzled sky-pirates smashed through the glass! 
+            </p>
+
+            <p class="story-p">
+                The battle was chaotic fury. <span class="char-beard">The Beard</span> swung his greataxe into the fray, slicing a bandit, while <span class="char-bacon">Master Bacon</span> hurled two daggers that missed entirely, forcing her to ready her body for a leap. <span class="char-elcava">Elcava</span> unleashed two *magic missiles* that slammed into an assailant.
+            </p>
+
+            <div class="breakout-quote">
+                "Manscaped Pirates!" <br>
+                <small>— <span class="char-boh">Lil' Boh</span></small>
+            </div>
+
+            <p class="story-p">
+                <span class="char-alice">Alice of Lore</span> cast *crown of madness*, snapping the mind of an elite pirate captain. <span class="char-boh">Lil' Boh</span> took two heavy cuts from enemy blades, entered a primal rage, and sheared a pirate completely in two with a single counter-swing. <span class="char-halen">Baron Von Halen</span> tried to cast *hideous laughter* but fumbled the spell. <span class="char-oldman">Ye Old Man</span> swung a massive warhammer; he missed on his first swing, but his second blow delivered shattering damage before the weapon became stuck in the overhead luggage rack. <span class="char-bacon">Master Bacon</span>, devoid of weapons, punched a wooden passenger chair with immense, aggressive energy. <span class="char-elcava">Elcava</span> fired another *magic missile*, executing a nearby bandit on the spot.
+            </p>
+
+            <div class="dialogue-box">
+                <div class="dialogue-line"><span class="char-boh">Lil' Boh:</span> "You get a gummy bear because you killed a bandit."</div>
+                <div class="dialogue-line"><span class="char-oldman">Ye Old Man:</span> "Can I have a gummy bear because I’m Ye Old Man?"</div>
+            </div>
+
+            <p class="story-p">
+                The tide turned bloody. The crazed pirate captain under the crown's influence turned and delivered a venomous strike to <span class="char-oldman">Ye Old Man</span>, while another pirate lunged and struck <span class="char-elcava">Elcava</span>. <span class="char-alice">Alice of Lore</span> missed a desperate dagger thrust but buried her secondary blade deep into a pirate's side. The pirates retaliated against <span class="char-alice">Alice</span> but missed. <span class="char-bacon">Master Bacon</span> landed a solid martial strike, but a pirate whipped around with a hand-crossbow, firing a bolt dipped in deadly toxin. The poison coursed through her veins, and <span class="char-bacon">Master Bacon</span> collapsed, dead upon the floor.
+            </p>
+
+            <p class="story-p">
+                Raging, <span class="char-boh">Lil' Boh</span> cleaved through the ranks, dealing devastating damage. <span class="char-halen">Baron Von Halen</span> tried to execute a dramatic power slide into the center of the horde to cast *thunderwave*, screaming <span class="char-bacon">"Hardcore Parkour!"</span>, but he wiped out completely and continued to strum his lute terribly. <span class="char-beard">The Beard</span> swung his greataxe and missed again. <span class="char-elcava">Elcava</span> fired two *magic missiles* that went wide, while <span class="char-boh">Lil' Boh</span> and <span class="char-alice">Alice of Lore</span> were both struck by poisoned crossbow bolts. In a tragic turn, two stray bolts ricocheted across the metal car and thumped into <span class="char-bacon">Master Bacon's</span> lifeless body. 
+            </p>
+
+            <p class="story-p">
+                <span class="char-boh">Lil' Boh</span> roared and cut yet another pirate cleanly in half. <span class="char-halen">Baron Von Halen</span> failed his *thunderwave* a second time, but accidentally killed a pirate by panicking and stabbing him squarely in the foot. <span class="char-patti">Patti Goouya</span> finally jolted awake from her slumber, looking around at the diminutive heroes.
+            </p>
+
+            <div class="breakout-quote">
+                "Are the pirates intimidated by you small people?" <br>
+                <small>— <span class="char-patti">Patti Goouya</span></small>
+            </div>
+
+            <p class="story-p">
+                While <span class="char-oldman">Ye Old Man</span> hurriedly cast a healing spell on himself, the pirates completed their true objective. In the absolute chaos, they smashed open the vault, secured the heavily guarded box, and began hoisting it up to their hovering airship via repelling ropes. 
+            </p>
+
+            <p class="story-p">
+                <span class="char-beard">The Beard</span> delivered a final strike to the maniacal captain. <span class="char-elcava">Elcava</span> unleashed a desperate, wide-radius *thunderwave*. The concussive blast caught <span class="char-oldman">Ye Old Man</span> and <span class="char-boh">Lil' Boh</span>, slamming them both into the broken wall of the train car. <span class="char-oldman">Ye Old Man</span> was blasted clean out of the carriage, left hanging onto the side of the speeding train for dear life. The crazed pirate captain sliced <span class="char-boh">Lil' Boh</span> one final time before <span class="char-alice">Alice of Lore</span> stepped forward and finished the brute with her dagger. <span class="char-boh">Lil' Boh</span> leaned out the shattered wall and hauled <span class="char-oldman">Ye Old Man</span> back to safety.
+            </p>
+
+            <p class="story-p">
+                In a final act of desperation, <span class="char-bacon">Master Bacon's</span> scouting bird flew out the window, attempting to claw at the pirates pulling up their ropes. But it was too late. The lines were severed, and the pirate barge ascended into the clouds, vanishing with the treasure. The train slowly pulled into the next station, leaving the battered, bewildered adventurers standing among the wreckage, thoroughly befuddled by the ride.
+            </p>
+        </main>
+    </div>
+
+</body>
+</html>
